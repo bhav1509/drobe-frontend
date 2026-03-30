@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../models/outfit.dart';
-import '../services/outfit_service.dart';
+import '../models/garment.dart';
+import '../services/garment_service.dart';
 
-class OutfitDetailScreen extends StatefulWidget {
-  final Outfit outfit;
+class WardrobeDetailScreen extends StatefulWidget {
+  final Garment garment;
 
-  const OutfitDetailScreen({super.key, required this.outfit});
+  const WardrobeDetailScreen({super.key, required this.garment});
 
   @override
-  State<OutfitDetailScreen> createState() => _OutfitDetailScreenState();
+  State<WardrobeDetailScreen> createState() => _WardrobeDetailScreenState();
 }
 
-class _OutfitDetailScreenState extends State<OutfitDetailScreen> {
+class _WardrobeDetailScreenState extends State<WardrobeDetailScreen> {
   bool isDeleting = false;
 
-  Future<void> _deleteOutfit() async {
+  Future<void> _deleteGarment() async {
     final shouldDelete = await showDialog<bool>(
       context: context,
       builder: (context) {
@@ -44,11 +44,11 @@ class _OutfitDetailScreenState extends State<OutfitDetailScreen> {
     });
 
     try {
-      await OutfitService.deleteOutfit(widget.outfit.id);
+      await GarmentService.deleteGarment(widget.garment.id);
 
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Photo deleted')),
+        const SnackBar(content: Text('Garment deleted')),
       );
       Navigator.pop(context, true);
     } catch (e) {
@@ -67,7 +67,7 @@ class _OutfitDetailScreenState extends State<OutfitDetailScreen> {
     String formattedDate = 'Unknown date';
 
     try {
-      final date = DateTime.parse(widget.outfit.createdAt).toLocal();
+      final date = DateTime.parse(widget.garment.createdAt).toLocal();
       formattedDate = DateFormat('dd MMM yyyy').format(date);
     } catch (_) {}
 
@@ -82,7 +82,7 @@ class _OutfitDetailScreenState extends State<OutfitDetailScreen> {
         ),
         actions: [
           IconButton(
-            onPressed: isDeleting ? null : _deleteOutfit,
+            onPressed: isDeleting ? null : _deleteGarment,
             icon: isDeleting
                 ? const SizedBox(
                     width: 20,
@@ -93,7 +93,7 @@ class _OutfitDetailScreenState extends State<OutfitDetailScreen> {
                     ),
                   )
                 : const Icon(Icons.delete_outline),
-            tooltip: 'Delete photo',
+            tooltip: 'Delete garment',
           ),
         ],
       ),
@@ -102,7 +102,7 @@ class _OutfitDetailScreenState extends State<OutfitDetailScreen> {
           minScale: 0.8,
           maxScale: 4.0,
           child: Image.network(
-            widget.outfit.imageUrl,
+            widget.garment.imageUrl,
             fit: BoxFit.contain,
             errorBuilder: (context, error, stackTrace) {
               return const Center(

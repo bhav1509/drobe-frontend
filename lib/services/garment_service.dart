@@ -38,4 +38,14 @@ class GarmentService {
       throw Exception('Failed to upload garment');
     }
   }
+
+  static Future<void> deleteGarment(int garmentId) async {
+    final response = await http.delete(
+      Uri.parse('$baseUrl/api/garments/$garmentId'),
+    );
+
+    if (response.statusCode != 200 && response.statusCode != 204) {
+      throw Exception('Failed to delete garment');
+    }
+  }
 }

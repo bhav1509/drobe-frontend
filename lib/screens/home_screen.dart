@@ -1,18 +1,16 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:image_picker/image_picker.dart';
 import '../models/outfit.dart';
-import '../services/garment_service.dart';
 import '../services/outfit_service.dart';
-import '../widgets/upload_card.dart';
 import '../widgets/outfit_card.dart';
-import 'garments_screen.dart';
-import 'outfit_journal_screen.dart';
+import 'outfits_screen.dart';
 import 'settings_screen.dart';
+import 'suggestions_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final ValueChanged<int>? onTabSelected;
+
+  const HomeScreen({super.key, this.onTabSelected});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -46,59 +44,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text('Error loading outfits: $e')));
-    }
-  }
-
-  Future<void> pickAndUploadImage() async {
-    final picker = ImagePicker();
-
-    final pickedFile = await picker.pickImage(
-      source: ImageSource.gallery,
-      imageQuality: 70,
-      maxWidth: 1080,
-    );
-
-    if (pickedFile == null) return;
-
-    try {
-      await OutfitService.uploadOutfit(File(pickedFile.path));
-      await fetchOutfits();
-
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Outfit uploaded successfully')),
-      );
-    } catch (e) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Upload failed: $e')));
-    }
-  }
-
-  Future<void> pickAndUploadGarment() async {
-    final picker = ImagePicker();
-
-    final pickedFile = await picker.pickImage(
-      source: ImageSource.gallery,
-      imageQuality: 70,
-      maxWidth: 1080,
-    );
-
-    if (pickedFile == null) return;
-
-    try {
-      await GarmentService.uploadGarment(File(pickedFile.path));
-
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Garment uploaded successfully')),
-      );
-    } catch (e) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Upload failed: $e')));
     }
   }
 
@@ -148,115 +93,153 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: UploadCard(
-                    title: 'Add Outfit',
-                    icon: Icons.image_outlined,
-                    onTap: pickAndUploadImage,
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SuggestionsScreen(),
                   ),
+                );
+              },
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.fromLTRB(24, 28, 24, 28),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade200,
+                  borderRadius: BorderRadius.circular(24),
                 ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: UploadCard(
-                    title: 'Add Garment',
-                    icon: Icons.checkroom_outlined,
-                    onTap: pickAndUploadGarment,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 24),
-            Row(
-              children: [
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const OutfitJournalScreen(),
-                      ),
-                    );
-                  },
-                  borderRadius: BorderRadius.circular(8),
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 4),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Icon(Icons.photo_library_outlined, size: 26),
-                        SizedBox(width: 10),
-                        Text(
-                          'Recent Outfits',
-                          style: TextStyle(
-                            fontSize: 28,
-                            fontWeight: FontWeight.w500,
+                        DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(Radius.circular(12)),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Icon(Icons.auto_awesome, size: 24),
+                          ),
+                        ),
+                        SizedBox(width: 12),
+                        Expanded(
+                          child: Text(
+                            'Suggest me an outfit',
+                            style: TextStyle(
+                              fontSize: 30,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
                       ],
                     ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Expanded(
-              child: isLoading
-                  ? const Center(child: CircularProgressIndicator())
-                  : outfits.isEmpty
-                  ? const Center(child: Text('No outfits uploaded yet'))
-                  : MasonryGridView.count(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 12,
-                      crossAxisSpacing: 12,
-                      itemCount: outfits.length,
-                      itemBuilder: (context, index) {
-                        final outfit = outfits[index];
-                        return OutfitCard(outfit: outfit);
-                      },
+                    const SizedBox(height: 14),
+                    const Text(
+                      'Get a styling suggestion based on what is already in your wardrobe.',
+                      style: TextStyle(
+                        fontSize: 16,
+                        height: 1.4,
+                        color: Colors.black54,
+                      ),
                     ),
+                    const SizedBox(height: 22),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 12,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade800,
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      child: const Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.arrow_forward,
+                            size: 18,
+                            color: Colors.white,
+                          ),
+                          SizedBox(width: 8),
+                          Text(
+                            'Suggest now',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 24),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      if (widget.onTabSelected != null) {
+                        widget.onTabSelected!(1);
+                      } else {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const OutfitsScreen(),
+                          ),
+                        );
+                      }
+                    },
+                    borderRadius: BorderRadius.circular(8),
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 4),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.photo_library_outlined, size: 24),
+                          SizedBox(width: 10),
+                          Text(
+                            'Recent Outfits',
+                            style: TextStyle(
+                              fontSize: 26,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 18),
+                  Expanded(
+                    child: isLoading
+                        ? const Center(child: CircularProgressIndicator())
+                        : outfits.isEmpty
+                        ? const Center(
+                            child: Text('No outfits uploaded yet'),
+                          )
+                        : MasonryGridView.count(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 12,
+                            crossAxisSpacing: 12,
+                            itemCount: outfits.length,
+                            itemBuilder: (context, index) {
+                              final outfit = outfits[index];
+                              return OutfitCard(outfit: outfit);
+                            },
+                          ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 1,
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.white,
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.grey.shade600,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        onTap: (index) {
-          if (index == 1) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const OutfitJournalScreen(),
-              ),
-            );
-          }
-          if (index == 2) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const GarmentsScreen(),
-              ),
-            );
-          }
-        },
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.auto_awesome), label: ''),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.photo_library_outlined),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.checkroom_outlined),
-            label: '',
-          ),
-        ],
       ),
     );
   }

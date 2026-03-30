@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/garment.dart';
+import '../screens/wardrobe_detail_screen.dart';
 
 class GarmentCard extends StatelessWidget {
   final Garment garment;
+  final VoidCallback? onDeleted;
 
   const GarmentCard({
     super.key,
     required this.garment,
+    this.onDeleted,
   });
 
   @override
@@ -21,35 +24,66 @@ class GarmentCard extends StatelessWidget {
       formattedDate = 'Unknown date';
     }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          formattedDate,
-          style: const TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w500,
+    return GestureDetector(
+      onTap: () async {
+        final wasDeleted = await Navigator.push<bool>(
+          context,
+          MaterialPageRoute(
+            builder: (context) => WardrobeDetailScreen(garment: garment),
           ),
-        ),
-        const SizedBox(height: 8),
-        ClipRRect(
-          borderRadius: BorderRadius.circular(16),
-          child: Image.network(
-            garment.imageUrl,
-            width: double.infinity,
-            fit: BoxFit.fitWidth,
-            errorBuilder: (context, error, stackTrace) {
-              return Container(
-                height: 180,
-                color: Colors.grey.shade300,
-                child: const Center(
-                  child: Icon(Icons.broken_image, size: 40),
-                ),
-              );
-            },
+        );
+
+        if (wasDeleted == true) {
+          onDeleted?.call();
+        }
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(16),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.grey.shade200,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Image.network(
+                    garment.imageUrl,
+                    width: double.infinity,
+                    fit: BoxFit.fitWidth,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        height: 180,
+                        color: Colors.grey.shade300,
+                        child: const Center(
+                          child: Icon(Icons.broken_image, size: 40),
+                        ),
+                      );
+                    },
+                  ),
+                  Container(
+                    color: Colors.grey.shade200,
+                    padding: const EdgeInsets.fromLTRB(10, 8, 10, 10),
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        formattedDate,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

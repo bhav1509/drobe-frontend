@@ -25,20 +25,16 @@ class OutfitCard extends StatelessWidget {
     }
 
     return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            formattedDate,
-            style: const TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          const SizedBox(height: 8),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(16),
-            child: Image.network(
+      decoration: BoxDecoration(
+        color: Colors.grey.shade200,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Image.network(
               imageUrl,
               width: double.infinity,
               fit: BoxFit.fitWidth,
@@ -52,8 +48,22 @@ class OutfitCard extends StatelessWidget {
                 );
               },
             ),
-          ),
-        ],
+            Container(
+              color: Colors.grey.shade200,
+              padding: const EdgeInsets.fromLTRB(10, 8, 10, 10),
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Text(
+                  formattedDate,
+                  style: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

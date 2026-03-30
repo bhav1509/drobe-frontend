@@ -3,11 +3,11 @@ import 'package:intl/intl.dart';
 import '../models/outfit.dart';
 import '../screens/outfit_detail_screen.dart';
 
-class JournalOutfitItem extends StatelessWidget {
+class OutfitGridItem extends StatelessWidget {
   final Outfit outfit;
   final VoidCallback? onDeleted;
 
-  const JournalOutfitItem({super.key, required this.outfit, this.onDeleted});
+  const OutfitGridItem({super.key, required this.outfit, this.onDeleted});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class JournalOutfitItem extends StatelessWidget {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.grey.shade100,
+          color: Colors.grey.shade200,
           borderRadius: BorderRadius.circular(16),
         ),
         child: ClipRRect(
@@ -41,23 +41,22 @@ class JournalOutfitItem extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Expanded(
-                child: Image.network(
-                  outfit.imageUrl,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Container(
-                      color: Colors.grey.shade300,
-                      child: const Center(
-                        child: Icon(Icons.broken_image, size: 40),
-                      ),
-                    );
-                  },
-                ),
+              Image.network(
+                outfit.imageUrl,
+                width: double.infinity,
+                fit: BoxFit.fitWidth,
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    height: 180,
+                    color: Colors.grey.shade300,
+                    child: const Center(
+                      child: Icon(Icons.broken_image, size: 40),
+                    ),
+                  );
+                },
               ),
               Container(
-                color: Colors.white,
+                color: Colors.grey.shade200,
                 padding: const EdgeInsets.fromLTRB(10, 8, 10, 10),
                 child: Align(
                   alignment: Alignment.centerRight,
