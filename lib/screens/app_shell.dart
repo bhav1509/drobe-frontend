@@ -12,12 +12,16 @@ class AppShell extends StatefulWidget {
 
 class _AppShellState extends State<AppShell> {
   int currentIndex = 0;
+  int homeRefreshToken = 0;
 
   void _selectTab(int index) {
     if (currentIndex == index) return;
 
     setState(() {
       currentIndex = index;
+      if (index == 0) {
+        homeRefreshToken++;
+      }
     });
   }
 
@@ -27,7 +31,10 @@ class _AppShellState extends State<AppShell> {
       body: IndexedStack(
         index: currentIndex,
         children: [
-          HomeScreen(onTabSelected: _selectTab),
+          HomeScreen(
+            onTabSelected: _selectTab,
+            refreshToken: homeRefreshToken,
+          ),
           const OutfitsScreen(),
           const WardrobeScreen(),
         ],

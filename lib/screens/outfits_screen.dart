@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import '../models/outfit.dart';
 import '../services/outfit_service.dart';
 import '../widgets/outfit_grid_item.dart';
+import '../widgets/profile_menu_button.dart';
 
 class OutfitsScreen extends StatefulWidget {
   const OutfitsScreen({super.key});
@@ -149,6 +150,9 @@ class _OutfitsScreenState extends State<OutfitsScreen> {
         centerTitle: true,
         backgroundColor: Colors.white,
         elevation: 0,
+        actions: [
+          const ProfileMenuButton(),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),

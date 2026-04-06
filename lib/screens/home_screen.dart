@@ -3,14 +3,19 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import '../models/outfit.dart';
 import '../services/outfit_service.dart';
 import '../widgets/outfit_card.dart';
+import '../widgets/profile_menu_button.dart';
 import 'outfits_screen.dart';
-import 'settings_screen.dart';
 import 'suggestions_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final ValueChanged<int>? onTabSelected;
+  final int refreshToken;
 
-  const HomeScreen({super.key, this.onTabSelected});
+  const HomeScreen({
+    super.key,
+    this.onTabSelected,
+    this.refreshToken = 0,
+  });
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -47,19 +52,12 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  Future<void> handleProfileMenu(String value) async {
-    if (value == 'settings') {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const SettingsScreen()),
-      );
-      return;
-    }
+  @override
+  void didUpdateWidget(covariant HomeScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
 
-    if (value == 'logout') {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Logout is not wired yet')),
-      );
+    if (widget.refreshToken != oldWidget.refreshToken) {
+      fetchOutfits();
     }
   }
 
@@ -72,20 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Colors.white,
         elevation: 0,
         actions: [
-          PopupMenuButton<String>(
-            onSelected: handleProfileMenu,
-            icon: const Icon(Icons.account_circle_outlined),
-            itemBuilder: (context) => const [
-              PopupMenuItem<String>(
-                value: 'settings',
-                child: Text('Settings'),
-              ),
-              PopupMenuItem<String>(
-                value: 'logout',
-                child: Text('Log out'),
-              ),
-            ],
-          ),
+          const ProfileMenuButton(),
         ],
       ),
       body: Padding(

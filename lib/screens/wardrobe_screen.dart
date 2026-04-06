@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import '../models/garment.dart';
 import '../services/garment_service.dart';
 import '../widgets/garment_card.dart';
+import '../widgets/profile_menu_button.dart';
 
 class WardrobeScreen extends StatefulWidget {
   const WardrobeScreen({super.key});
@@ -93,6 +94,9 @@ class _WardrobeScreenState extends State<WardrobeScreen> {
         centerTitle: true,
         backgroundColor: Colors.white,
         elevation: 0,
+        actions: [
+          const ProfileMenuButton(),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),

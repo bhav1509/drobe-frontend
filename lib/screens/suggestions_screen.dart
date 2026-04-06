@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/profile_menu_button.dart';
 
 class SuggestionsScreen extends StatelessWidget {
   const SuggestionsScreen({super.key});
@@ -7,10 +8,13 @@ class SuggestionsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Suggest Me An Outfit'),
+        title: const Text('SUGGEST'),
         centerTitle: true,
         backgroundColor: Colors.white,
         elevation: 0,
+        actions: [
+          const ProfileMenuButton(),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(24),
