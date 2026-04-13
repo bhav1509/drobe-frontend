@@ -4,37 +4,39 @@ import '../screens/settings_screen.dart';
 class ProfileMenuButton extends StatelessWidget {
   const ProfileMenuButton({super.key});
 
-  void _handleSelection(BuildContext context, String value) {
-    if (value == 'settings') {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const SettingsScreen()),
-      );
-      return;
-    }
-
-    if (value == 'logout') {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Logout is not wired yet')));
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton<String>(
-      onSelected: (value) => _handleSelection(context, value),
-      icon: const Icon(Icons.account_circle_outlined),
-      itemBuilder: (context) => const [
-        PopupMenuItem<String>(
-          value: 'settings',
-          child: Text('Settings'),
+    final scheme = Theme.of(context).colorScheme;
+
+    return Padding(
+      padding: const EdgeInsets.only(right: 8),
+      child: IconButton(
+        tooltip: 'Settings',
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const SettingsScreen()),
+          );
+        },
+        style: IconButton.styleFrom(
+          padding: const EdgeInsets.all(6),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
         ),
-        PopupMenuItem<String>(
-          value: 'logout',
-          child: Text('Log out'),
+        icon: Container(
+          padding: const EdgeInsets.all(6),
+          decoration: BoxDecoration(
+            color: scheme.surfaceContainerHighest,
+            borderRadius: BorderRadius.circular(14),
+          ),
+          child: Icon(
+            Icons.account_circle_outlined,
+            color: scheme.onSurface,
+            size: 24,
+          ),
         ),
-      ],
+      ),
     );
   }
 }

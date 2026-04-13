@@ -64,6 +64,7 @@ class _OutfitDetailScreenState extends State<OutfitDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
     String formattedDate = 'Unknown date';
 
     try {
@@ -72,24 +73,24 @@ class _OutfitDetailScreenState extends State<OutfitDetailScreen> {
     } catch (_) {}
 
     return Scaffold(
-      backgroundColor: Colors.grey.shade300,
+      backgroundColor: scheme.surface,
       appBar: AppBar(
-        backgroundColor: Colors.grey.shade200,
-        iconTheme: const IconThemeData(color: Colors.black87),
+        backgroundColor: scheme.surface,
+        iconTheme: IconThemeData(color: scheme.onSurface),
         title: Text(
           formattedDate,
-          style: const TextStyle(color: Colors.black87),
+          style: TextStyle(color: scheme.onSurface),
         ),
         actions: [
           IconButton(
             onPressed: isDeleting ? null : _deleteOutfit,
             icon: isDeleting
-                ? const SizedBox(
+                ? SizedBox(
                     width: 20,
                     height: 20,
                     child: CircularProgressIndicator(
                       strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.black87),
+                      valueColor: AlwaysStoppedAnimation<Color>(scheme.onSurface),
                     ),
                   )
                 : const Icon(Icons.delete_outline),
@@ -105,8 +106,8 @@ class _OutfitDetailScreenState extends State<OutfitDetailScreen> {
             widget.outfit.imageUrl,
             fit: BoxFit.contain,
             errorBuilder: (context, error, stackTrace) {
-              return const Center(
-                child: Icon(Icons.broken_image, color: Colors.white, size: 48),
+              return Center(
+                child: Icon(Icons.broken_image, color: scheme.onSurface, size: 48),
               );
             },
           ),

@@ -78,22 +78,19 @@ class _WardrobeScreenState extends State<WardrobeScreen> {
         context,
       ).showSnackBar(SnackBar(content: Text('Upload failed: $e')));
     } finally {
-      if (!mounted) return;
-      setState(() {
-        isUploading = false;
-      });
+      if (mounted) {
+        setState(() {
+          isUploading = false;
+        });
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('WARDROBE'),
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        elevation: 0,
         actions: [
           const ProfileMenuButton(),
         ],
@@ -144,9 +141,10 @@ class _WardrobeScreenState extends State<WardrobeScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        heroTag: 'wardrobe-upload-fab',
         onPressed: isUploading ? null : pickAndUploadGarment,
-        backgroundColor: Colors.grey.shade800,
-        foregroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.inverseSurface,
+        foregroundColor: Theme.of(context).colorScheme.onInverseSurface,
         shape: const CircleBorder(),
         child: isUploading
             ? const SizedBox(

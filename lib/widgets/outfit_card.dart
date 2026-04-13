@@ -13,6 +13,7 @@ class OutfitCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final imageUrl = outfit.imageUrl;
+    final scheme = Theme.of(context).colorScheme;
 
     DateTime? date;
     String formattedDate = '';
@@ -26,7 +27,7 @@ class OutfitCard extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: Colors.grey.shade200,
+        color: scheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(16),
       ),
       child: ClipRRect(
@@ -41,7 +42,7 @@ class OutfitCard extends StatelessWidget {
               errorBuilder: (context, error, stackTrace) {
                 return Container(
                   height: 180,
-                  color: Colors.grey.shade300,
+                  color: scheme.surfaceContainer,
                   child: const Center(
                     child: Icon(Icons.broken_image, size: 40),
                   ),
@@ -49,7 +50,7 @@ class OutfitCard extends StatelessWidget {
               },
             ),
             Container(
-              color: Colors.grey.shade200,
+              color: scheme.surfaceContainerHighest,
               padding: const EdgeInsets.fromLTRB(10, 8, 10, 10),
               child: Align(
                 alignment: Alignment.centerRight,

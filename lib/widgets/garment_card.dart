@@ -15,6 +15,7 @@ class GarmentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
     String formattedDate = '';
 
     try {
@@ -44,7 +45,7 @@ class GarmentCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.grey.shade200,
+                color: scheme.surfaceContainerHighest,
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Column(
@@ -57,7 +58,7 @@ class GarmentCard extends StatelessWidget {
                     errorBuilder: (context, error, stackTrace) {
                       return Container(
                         height: 180,
-                        color: Colors.grey.shade300,
+                        color: scheme.surfaceContainer,
                         child: const Center(
                           child: Icon(Icons.broken_image, size: 40),
                         ),
@@ -65,7 +66,7 @@ class GarmentCard extends StatelessWidget {
                     },
                   ),
                   Container(
-                    color: Colors.grey.shade200,
+                    color: scheme.surfaceContainerHighest,
                     padding: const EdgeInsets.fromLTRB(10, 8, 10, 10),
                     child: Align(
                       alignment: Alignment.centerRight,

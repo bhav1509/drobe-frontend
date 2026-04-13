@@ -46,6 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
         isLoading = false;
       });
 
+      if (!mounted) return;
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text('Error loading outfits: $e')));
@@ -66,9 +67,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('DROBE'),
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        elevation: 0,
         actions: [
           const ProfileMenuButton(),
         ],
@@ -91,27 +89,29 @@ class _HomeScreenState extends State<HomeScreen> {
                 width: double.infinity,
                 padding: const EdgeInsets.fromLTRB(24, 28, 24, 28),
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade200,
+                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
                   borderRadius: BorderRadius.circular(24),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Row(
+                    Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         DecoratedBox(
                           decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(12)),
+                            color: Theme.of(context).colorScheme.surface,
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(12),
+                            ),
                           ),
-                          child: Padding(
+                          child: const Padding(
                             padding: EdgeInsets.all(10),
                             child: Icon(Icons.auto_awesome, size: 24),
                           ),
                         ),
-                        SizedBox(width: 12),
-                        Expanded(
+                        const SizedBox(width: 12),
+                        const Expanded(
                           child: Text(
                             'Suggest me an outfit',
                             style: TextStyle(
@@ -123,12 +123,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                     const SizedBox(height: 14),
-                    const Text(
+                    Text(
                       'Get a styling suggestion based on what is already in your wardrobe.',
                       style: TextStyle(
                         fontSize: 16,
                         height: 1.4,
-                        color: Colors.black54,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
                     ),
                     const SizedBox(height: 22),
@@ -138,19 +138,19 @@ class _HomeScreenState extends State<HomeScreen> {
                         vertical: 12,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.grey.shade800,
+                        color: Theme.of(context).colorScheme.inverseSurface,
                         borderRadius: BorderRadius.circular(14),
                       ),
-                      child: const Row(
+                      child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.arrow_forward,
                             size: 18,
                             color: Colors.white,
                           ),
-                          SizedBox(width: 8),
-                          Text(
+                          const SizedBox(width: 8),
+                          const Text(
                             'Suggest now',
                             style: TextStyle(
                               color: Colors.white,
@@ -159,11 +159,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ],
                       ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                  ],
-                ),
-              ),
-            ),
             const SizedBox(height: 24),
             Expanded(
               child: Column(

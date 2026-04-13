@@ -9,12 +9,7 @@ class SuggestionsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('SUGGEST'),
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        elevation: 0,
-        actions: [
-          const ProfileMenuButton(),
-        ],
+        actions: [const ProfileMenuButton()],
       ),
       body: Padding(
         padding: const EdgeInsets.all(24),
@@ -23,7 +18,7 @@ class SuggestionsScreen extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.all(28),
             decoration: BoxDecoration(
-              color: Colors.grey.shade200,
+              color: Theme.of(context).colorScheme.surfaceContainerHighest,
               borderRadius: BorderRadius.circular(24),
             ),
             child: const Column(
@@ -35,7 +30,7 @@ class SuggestionsScreen extends StatelessWidget {
                   children: [
                     DecoratedBox(
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Colors.transparent,
                         borderRadius: BorderRadius.all(Radius.circular(12)),
                       ),
                       child: Padding(

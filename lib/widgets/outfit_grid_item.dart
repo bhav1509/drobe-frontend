@@ -11,6 +11,7 @@ class OutfitGridItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
     String formattedDate = 'Unknown date';
 
     try {
@@ -33,7 +34,7 @@ class OutfitGridItem extends StatelessWidget {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.grey.shade200,
+          color: scheme.surfaceContainerHighest,
           borderRadius: BorderRadius.circular(16),
         ),
         child: ClipRRect(
@@ -46,21 +47,21 @@ class OutfitGridItem extends StatelessWidget {
                 width: double.infinity,
                 fit: BoxFit.fitWidth,
                 errorBuilder: (context, error, stackTrace) {
-                  return Container(
-                    height: 180,
-                    color: Colors.grey.shade300,
-                    child: const Center(
-                      child: Icon(Icons.broken_image, size: 40),
-                    ),
-                  );
-                },
-              ),
-              Container(
-                color: Colors.grey.shade200,
-                padding: const EdgeInsets.fromLTRB(10, 8, 10, 10),
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: Text(
+                return Container(
+                  height: 180,
+                  color: scheme.surfaceContainer,
+                  child: const Center(
+                    child: Icon(Icons.broken_image, size: 40),
+                  ),
+                );
+              },
+            ),
+            Container(
+              color: scheme.surfaceContainerHighest,
+              padding: const EdgeInsets.fromLTRB(10, 8, 10, 10),
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Text(
                     formattedDate,
                     style: const TextStyle(
                       fontSize: 13,

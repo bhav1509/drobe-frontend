@@ -107,10 +107,11 @@ class _OutfitsScreenState extends State<OutfitsScreen> {
         context,
       ).showSnackBar(SnackBar(content: Text('Upload failed: $e')));
     } finally {
-      if (!mounted) return;
-      setState(() {
-        isUploading = false;
-      });
+      if (mounted) {
+        setState(() {
+          isUploading = false;
+        });
+      }
     }
   }
 
@@ -144,12 +145,8 @@ class _OutfitsScreenState extends State<OutfitsScreen> {
     final sectionTitles = grouped.keys.toList();
 
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('OUTFITS'),
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        elevation: 0,
         actions: [
           const ProfileMenuButton(),
         ],
@@ -230,9 +227,10 @@ class _OutfitsScreenState extends State<OutfitsScreen> {
               ),
       ),
       floatingActionButton: FloatingActionButton(
+        heroTag: 'outfits-upload-fab',
         onPressed: isUploading ? null : pickAndUploadImage,
-        backgroundColor: Colors.grey.shade800,
-        foregroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.inverseSurface,
+        foregroundColor: Theme.of(context).colorScheme.onInverseSurface,
         shape: const CircleBorder(),
         child: isUploading
             ? const SizedBox(

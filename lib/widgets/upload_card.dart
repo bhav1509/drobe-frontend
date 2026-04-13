@@ -14,19 +14,20 @@ class UploadCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
     return GestureDetector(
       onTap: onTap,
       child: Container(
         height: 180,
         width: double.infinity,
         decoration: BoxDecoration(
-          color: Colors.grey.shade300,
+          color: scheme.surfaceContainerHighest,
           borderRadius: BorderRadius.circular(16),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 48, color: Colors.white70),
+            Icon(icon, size: 48, color: scheme.onSurfaceVariant),
             const SizedBox(height: 16),
             Text(
               title,
@@ -37,11 +38,11 @@ class UploadCard extends StatelessWidget {
             Container(
               width: 48,
               height: 48,
-              decoration: const BoxDecoration(
-                color: Colors.white70,
+              decoration: BoxDecoration(
+                color: scheme.surface,
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.add, size: 28, color: Colors.grey),
+              child: Icon(Icons.add, size: 28, color: scheme.onSurfaceVariant),
             ),
           ],
         ),
