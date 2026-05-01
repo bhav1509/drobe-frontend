@@ -2,16 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/garment.dart';
 import '../screens/wardrobe_detail_screen.dart';
+import '../services/auth_service.dart';
 
 class GarmentCard extends StatelessWidget {
   final Garment garment;
   final VoidCallback? onDeleted;
 
-  const GarmentCard({
-    super.key,
-    required this.garment,
-    this.onDeleted,
-  });
+  const GarmentCard({super.key, required this.garment, this.onDeleted});
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +50,7 @@ class GarmentCard extends StatelessWidget {
                 children: [
                   Image.network(
                     garment.imageUrl,
+                    headers: AuthService.authorizationHeaders,
                     width: double.infinity,
                     fit: BoxFit.fitWidth,
                     errorBuilder: (context, error, stackTrace) {

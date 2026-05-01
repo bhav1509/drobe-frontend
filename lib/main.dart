@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'app_state.dart';
 import 'screens/app_shell.dart';
+import 'screens/sign_in_screen.dart';
 
 void main() {
   runApp(const DrobeApp());
@@ -39,9 +40,7 @@ class _DrobeAppState extends State<DrobeApp> {
             : colorScheme.surface,
         surfaceTintColor: Colors.transparent,
       ),
-      popupMenuTheme: PopupMenuThemeData(
-        color: colorScheme.surface,
-      ),
+      popupMenuTheme: PopupMenuThemeData(color: colorScheme.surface),
       snackBarTheme: SnackBarThemeData(
         behavior: SnackBarBehavior.floating,
         backgroundColor: colorScheme.inverseSurface,
@@ -63,7 +62,9 @@ class _DrobeAppState extends State<DrobeApp> {
             themeMode: _appState.themeMode,
             theme: _buildTheme(Brightness.light),
             darkTheme: _buildTheme(Brightness.dark),
-            home: const AppShell(),
+            home: _appState.accountStatus == AccountStatus.signedOut
+                ? const SignInScreen(canContinueAsGuest: false)
+                : const AppShell(),
           );
         },
       ),

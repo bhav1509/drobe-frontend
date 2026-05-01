@@ -1,22 +1,11 @@
 import 'package:flutter/material.dart';
+import 'services/auth_service.dart';
 
-enum ThemePreference {
-  system,
-  light,
-  dark,
-}
+enum ThemePreference { system, light, dark }
 
-enum AccountStatus {
-  signedOut,
-  guest,
-  signedIn,
-}
+enum AccountStatus { signedOut, guest, signedIn }
 
-enum ContentTab {
-  suggestions,
-  outfits,
-  wardrobe,
-}
+enum ContentTab { suggestions, outfits, wardrobe }
 
 extension ContentTabView on ContentTab {
   String get label {
@@ -44,8 +33,8 @@ extension ContentTabView on ContentTab {
 
 class AppState extends ChangeNotifier {
   ThemePreference _themePreference = ThemePreference.system;
-  AccountStatus _accountStatus = AccountStatus.guest;
-  String _accountLabel = 'Guest session';
+  AccountStatus _accountStatus = AccountStatus.signedOut;
+  String _accountLabel = 'Signed out';
   final Map<ContentTab, bool> _visibleTabs = {
     ContentTab.suggestions: true,
     ContentTab.outfits: true,
@@ -81,19 +70,10 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void signIn([String? identity]) {
+  Future<void> signInWithGoogle() async {
+    final session = await AuthService.signInWithGoogle();
     _accountStatus = AccountStatus.signedIn;
-    _accountLabel = identity == null || identity.trim().isEmpty
-        ? 'Signed in'
-        : 'Signed in as ${identity.trim()}';
-    notifyListeners();
-  }
-
-  void signUp([String? identity]) {
-    _accountStatus = AccountStatus.signedIn;
-    _accountLabel = identity == null || identity.trim().isEmpty
-        ? 'Account created'
-        : 'Signed up as ${identity.trim()}';
+    _accountLabel = session.label;
     notifyListeners();
   }
 
@@ -103,7 +83,8 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void logout() {
+  Future<void> logout() async {
+    await AuthService.logout();
     _accountStatus = AccountStatus.signedOut;
     _accountLabel = 'Signed out';
     notifyListeners();

@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/outfit.dart';
+import '../services/auth_service.dart';
 
 class OutfitCard extends StatelessWidget {
   final Outfit outfit;
 
-  const OutfitCard({
-    super.key,
-    required this.outfit,
-  });
+  const OutfitCard({super.key, required this.outfit});
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +35,7 @@ class OutfitCard extends StatelessWidget {
           children: [
             Image.network(
               imageUrl,
+              headers: AuthService.authorizationHeaders,
               width: double.infinity,
               fit: BoxFit.fitWidth,
               errorBuilder: (context, error, stackTrace) {

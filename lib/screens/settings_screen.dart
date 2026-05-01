@@ -1,50 +1,9 @@
 import 'package:flutter/material.dart';
 import '../app_state.dart';
+import 'sign_in_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
-
-  Future<void> _showAccountDialog(
-    BuildContext context, {
-    required String title,
-    required String buttonLabel,
-    required void Function(String value) onSubmit,
-  }) async {
-    final controller = TextEditingController();
-
-    await showDialog<void>(
-      context: context,
-      builder: (dialogContext) {
-        return AlertDialog(
-          title: Text(title),
-          content: TextField(
-            controller: controller,
-            decoration: const InputDecoration(labelText: 'Email or username'),
-            textInputAction: TextInputAction.done,
-            onSubmitted: (value) {
-              Navigator.pop(dialogContext);
-              onSubmit(value);
-            },
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(dialogContext),
-              child: const Text('Cancel'),
-            ),
-            FilledButton(
-              onPressed: () {
-                Navigator.pop(dialogContext);
-                onSubmit(controller.text);
-              },
-              child: Text(buttonLabel),
-            ),
-          ],
-        );
-      },
-    );
-
-    controller.dispose();
-  }
 
   Widget _surfaceCard(BuildContext context, {required Widget child}) {
     final scheme = Theme.of(context).colorScheme;
@@ -112,6 +71,7 @@ class SettingsScreen extends StatelessWidget {
   Widget _actionButton(
     BuildContext context, {
     required String label,
+    required IconData icon,
     required VoidCallback onPressed,
   }) {
     final scheme = Theme.of(context).colorScheme;
@@ -126,9 +86,25 @@ class SettingsScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 13),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
       ),
-      child: Text(
-        label,
-        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 18),
+          const SizedBox(width: 8),
+          Text(
+            label,
+            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _openSignIn(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const SignInScreen(canContinueAsGuest: false),
       ),
     );
   }
@@ -217,37 +193,38 @@ class SettingsScreen extends StatelessWidget {
             child: Wrap(
               spacing: 10,
               runSpacing: 10,
+              crossAxisAlignment: WrapCrossAlignment.center,
               children: [
+                Chip(
+                  avatar: Icon(
+                    isLoggedIn
+                        ? Icons.verified_user_outlined
+                        : Icons.person_outline,
+                    size: 18,
+                  ),
+                  label: Text(appState.accountLabel),
+                  backgroundColor: Theme.of(context).colorScheme.surface,
+                  side: BorderSide(
+                    color: Theme.of(context).colorScheme.outlineVariant,
+                  ),
+                ),
                 if (isLoggedIn)
                   _actionButton(
                     context,
                     label: 'Logout',
-                    onPressed: appState.logout,
+                    icon: Icons.logout,
+                    onPressed: () async {
+                      await appState.logout();
+                      if (!context.mounted) return;
+                      Navigator.pop(context);
+                    },
                   )
                 else ...[
                   _actionButton(
                     context,
                     label: 'Sign in',
-                    onPressed: () {
-                      _showAccountDialog(
-                        context,
-                        title: 'Sign in',
-                        buttonLabel: 'Sign in',
-                        onSubmit: appState.signIn,
-                      );
-                    },
-                  ),
-                  _actionButton(
-                    context,
-                    label: 'Sign up',
-                    onPressed: () {
-                      _showAccountDialog(
-                        context,
-                        title: 'Sign up',
-                        buttonLabel: 'Create',
-                        onSubmit: appState.signUp,
-                      );
-                    },
+                    icon: Icons.login,
+                    onPressed: () => _openSignIn(context),
                   ),
                 ],
               ],

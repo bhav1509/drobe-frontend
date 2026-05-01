@@ -24,17 +24,10 @@ class ProfileMenuButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(14),
           ),
         ),
-        icon: Container(
-          padding: const EdgeInsets.all(6),
-          decoration: BoxDecoration(
-            color: scheme.surfaceContainerHighest,
-            borderRadius: BorderRadius.circular(14),
-          ),
-          child: Icon(
-            Icons.account_circle_outlined,
-            color: scheme.onSurface,
-            size: 24,
-          ),
+        icon: Icon(
+          Icons.account_circle_outlined,
+          color: scheme.onSurface,
+          size: 26,
         ),
       ),
     );

@@ -10,8 +10,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:drobe_frontend/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  testWidgets('shows sign in UI first', (WidgetTester tester) async {
     await tester.pumpWidget(const DrobeApp());
+
     expect(find.text('DROBE'), findsOneWidget);
+    expect(find.textContaining('Drobe'), findsOneWidget);
+    expect(find.text('Sign in with Google'), findsOneWidget);
   });
 }

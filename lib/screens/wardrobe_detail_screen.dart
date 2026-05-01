@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/garment.dart';
+import '../services/auth_service.dart';
 import '../services/garment_service.dart';
 
 class WardrobeDetailScreen extends StatefulWidget {
@@ -47,9 +48,9 @@ class _WardrobeDetailScreenState extends State<WardrobeDetailScreen> {
       await GarmentService.deleteGarment(widget.garment.id);
 
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Garment deleted')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Garment deleted')));
       Navigator.pop(context, true);
     } catch (e) {
       if (!mounted) return;
@@ -77,10 +78,7 @@ class _WardrobeDetailScreenState extends State<WardrobeDetailScreen> {
       appBar: AppBar(
         backgroundColor: scheme.surface,
         iconTheme: IconThemeData(color: scheme.onSurface),
-        title: Text(
-          formattedDate,
-          style: TextStyle(color: scheme.onSurface),
-        ),
+        title: Text(formattedDate, style: TextStyle(color: scheme.onSurface)),
         actions: [
           IconButton(
             onPressed: isDeleting ? null : _deleteGarment,
@@ -90,7 +88,9 @@ class _WardrobeDetailScreenState extends State<WardrobeDetailScreen> {
                     height: 20,
                     child: CircularProgressIndicator(
                       strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(scheme.onSurface),
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        scheme.onSurface,
+                      ),
                     ),
                   )
                 : const Icon(Icons.delete_outline),
@@ -104,10 +104,15 @@ class _WardrobeDetailScreenState extends State<WardrobeDetailScreen> {
           maxScale: 4.0,
           child: Image.network(
             widget.garment.imageUrl,
+            headers: AuthService.authorizationHeaders,
             fit: BoxFit.contain,
             errorBuilder: (context, error, stackTrace) {
               return Center(
-                child: Icon(Icons.broken_image, color: scheme.onSurface, size: 48),
+                child: Icon(
+                  Icons.broken_image,
+                  color: scheme.onSurface,
+                  size: 48,
+                ),
               );
             },
           ),

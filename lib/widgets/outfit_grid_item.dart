@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/outfit.dart';
 import '../screens/outfit_detail_screen.dart';
+import '../services/auth_service.dart';
 
 class OutfitGridItem extends StatelessWidget {
   final Outfit outfit;
@@ -44,24 +45,25 @@ class OutfitGridItem extends StatelessWidget {
             children: [
               Image.network(
                 outfit.imageUrl,
+                headers: AuthService.authorizationHeaders,
                 width: double.infinity,
                 fit: BoxFit.fitWidth,
                 errorBuilder: (context, error, stackTrace) {
-                return Container(
-                  height: 180,
-                  color: scheme.surfaceContainer,
-                  child: const Center(
-                    child: Icon(Icons.broken_image, size: 40),
-                  ),
-                );
-              },
-            ),
-            Container(
-              color: scheme.surfaceContainerHighest,
-              padding: const EdgeInsets.fromLTRB(10, 8, 10, 10),
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: Text(
+                  return Container(
+                    height: 180,
+                    color: scheme.surfaceContainer,
+                    child: const Center(
+                      child: Icon(Icons.broken_image, size: 40),
+                    ),
+                  );
+                },
+              ),
+              Container(
+                color: scheme.surfaceContainerHighest,
+                padding: const EdgeInsets.fromLTRB(10, 8, 10, 10),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
                     formattedDate,
                     style: const TextStyle(
                       fontSize: 13,

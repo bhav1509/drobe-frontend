@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/outfit.dart';
+import '../services/auth_service.dart';
 import '../services/outfit_service.dart';
 
 class OutfitDetailScreen extends StatefulWidget {
@@ -47,9 +48,9 @@ class _OutfitDetailScreenState extends State<OutfitDetailScreen> {
       await OutfitService.deleteOutfit(widget.outfit.id);
 
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Photo deleted')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Photo deleted')));
       Navigator.pop(context, true);
     } catch (e) {
       if (!mounted) return;
@@ -77,10 +78,7 @@ class _OutfitDetailScreenState extends State<OutfitDetailScreen> {
       appBar: AppBar(
         backgroundColor: scheme.surface,
         iconTheme: IconThemeData(color: scheme.onSurface),
-        title: Text(
-          formattedDate,
-          style: TextStyle(color: scheme.onSurface),
-        ),
+        title: Text(formattedDate, style: TextStyle(color: scheme.onSurface)),
         actions: [
           IconButton(
             onPressed: isDeleting ? null : _deleteOutfit,
@@ -90,7 +88,9 @@ class _OutfitDetailScreenState extends State<OutfitDetailScreen> {
                     height: 20,
                     child: CircularProgressIndicator(
                       strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(scheme.onSurface),
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        scheme.onSurface,
+                      ),
                     ),
                   )
                 : const Icon(Icons.delete_outline),
@@ -104,10 +104,15 @@ class _OutfitDetailScreenState extends State<OutfitDetailScreen> {
           maxScale: 4.0,
           child: Image.network(
             widget.outfit.imageUrl,
+            headers: AuthService.authorizationHeaders,
             fit: BoxFit.contain,
             errorBuilder: (context, error, stackTrace) {
               return Center(
-                child: Icon(Icons.broken_image, color: scheme.onSurface, size: 48),
+                child: Icon(
+                  Icons.broken_image,
+                  color: scheme.onSurface,
+                  size: 48,
+                ),
               );
             },
           ),
