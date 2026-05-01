@@ -5,3 +5,8 @@
 # Xcode-related
 **/dgph
 **/xcuserdata/
+
+# Local app credentials/config
+Runner/Info.plist
+Runner/GoogleService-Info.plist
+google-services.json

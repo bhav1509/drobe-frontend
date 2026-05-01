@@ -60,6 +60,15 @@ ios/Flutter/Flutter.podspec
 # Android
 android/.gradle/
 android/app/build/
+android/local.properties
+android/key.properties
+android/app/*.jks
+android/app/*.keystore
+
+# Local environment
+.env
+.env.*
+!.env.example
 
 # VS Code
 .vscode/
